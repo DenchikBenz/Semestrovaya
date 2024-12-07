@@ -1,4 +1,4 @@
-FROM maven:3.8.3-openjdk-17 as build
+FROM maven:4.0.0-openjdk-22 as build
 
 COPY src /home/app/src
 COPY pom.xml home/app
