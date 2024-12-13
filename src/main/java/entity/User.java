@@ -6,8 +6,25 @@ public class User {
     private String email;
     private String password;
     private String role;
+    private String photoPath;
 
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
+
+    public User(Integer id, String name, String email, String password, String role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
     public User(String name, String email, String password, String role) {
+
         this.name = name;
         this.email = email;
         this.password = password;

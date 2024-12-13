@@ -5,7 +5,9 @@ import util.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProgressDao {
     private static final String INSERT_PROGRESS = "INSERT INTO progress (user_id, program_id, day, status) VALUES (?, ?, ?, ?)";
@@ -54,4 +56,33 @@ public class ProgressDao {
             e.printStackTrace();
         }
     }
+    public Map<Integer, Boolean> getProgressByUserAndProgram(int userId, int programId) {
+        Map<Integer, Boolean> progress = new HashMap<>();
+        String sql = "SELECT day, status FROM progress WHERE user_id = ? AND program_id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, programId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                progress.put(resultSet.getInt("day"), resultSet.getBoolean("status"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return progress;
+    }
+    public void clearProgress(int userId, int programId) {
+        String sql = "DELETE FROM progress WHERE user_id = ? AND program_id = ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, programId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

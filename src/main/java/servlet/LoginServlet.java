@@ -28,9 +28,16 @@ public class LoginServlet extends HttpServlet {
 
         try {
             User user = authService.loginUser(email, password);
+            System.out.println("User logged in successfully: " + user.getId() + ", " + user.getEmail());
+            
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            response.sendRedirect("profile.jsp");
+            session.setAttribute("userId", user.getId());  
+            session.setAttribute("userName", user.getName());
+            session.setAttribute("userEmail", user.getEmail());
+            
+            System.out.println("Session attributes set. userId=" + session.getAttribute("userId"));
+            response.sendRedirect("profile");
         } catch (IllegalArgumentException e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/login.jsp").forward(request, response);

@@ -5,12 +5,26 @@ public class Program {
     private String title;
     private String description;
     private int duration;
-
+    private int createdBy;
     public Program(int id, String title, String description, int duration) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.duration = duration;
+    }
+    public Program(int id, String title, String description, int duration, int createdBy) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.duration = duration;
+        this.createdBy = createdBy;
+    }
+
+    public Program(String title, String description, int duration, int createdBy) {
+        this.title = title;
+        this.description = description;
+        this.duration = duration;
+        this.createdBy = createdBy;
     }
 
     public int getId() {
@@ -43,5 +57,13 @@ public class Program {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
     }
 }
