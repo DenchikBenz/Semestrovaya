@@ -1,5 +1,6 @@
 package servlet;
 
+import dao.WorkoutProgressDao;
 import entity.Program;
 import entity.User;
 import entity.Workout;
@@ -17,7 +18,7 @@ import java.util.List;
 @WebServlet("/program")
 public class ProgramServlet extends HttpServlet {
     private final ProgramService programService = new ProgramService();
-
+    private final WorkoutProgressDao workoutProgressDao = new WorkoutProgressDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Получаем ID программы из параметров запроса
@@ -48,13 +49,23 @@ public class ProgramServlet extends HttpServlet {
                 boolean isEnrolled = programService.isUserEnrolled(currentUser.getId(), program.getId());
                 request.setAttribute("isEnrolled", isEnrolled);
             }
-
-            // Устанавливаем атрибуты и отображаем страницу
-            request.setAttribute("program", program);
-            request.setAttribute("workoutCount", programService.getWorkoutCount(program.getId()));
             List<Workout> workouts = programService.getWorkoutsByProgramId(program.getId());
-            System.out.println("Retrieved workouts for program " + program.getId() + ": " + workouts.size() + " workouts");
+            int totalWorkouts = workouts.size();
+            int completedWorkouts = 0;
+            double progressPercentage = 0;
+
+            if (currentUser != null) {
+                completedWorkouts = workoutProgressDao.getCompletedWorkoutsCount(currentUser.getId(), program.getId());
+                progressPercentage = totalWorkouts > 0 ? (double) completedWorkouts / totalWorkouts * 100 : 0;
+            }
+
+            request.setAttribute("program", program);
             request.setAttribute("workouts", workouts);
+            request.setAttribute("workoutCount", totalWorkouts);
+            request.setAttribute("totalWorkouts", totalWorkouts);
+            request.setAttribute("completedWorkouts", completedWorkouts);
+            request.setAttribute("progressPercentage", progressPercentage);
+
             request.getRequestDispatcher("program.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
@@ -94,6 +105,12 @@ public class ProgramServlet extends HttpServlet {
                 case "unenroll":
                     programService.unenrollUserFromProgram(userId, progId);
                     break;
+                case "subscribe":
+                    programService.assignProgramToUser(userId, progId);
+                    break;
+                case "unsubscribe":
+                    programService.unenrollUserFromProgram(userId, progId);
+                    break;
                 default:
                     break;
             }
@@ -104,5 +121,7 @@ public class ProgramServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             response.sendRedirect("programs");
         }
+
     }
+
 }

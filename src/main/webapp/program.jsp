@@ -134,6 +134,8 @@
     </style>
 </head>
 <body>
+    <input type="hidden" id="programId" value="${program.id}">
+    <input type="hidden" id="totalWorkouts" value="${totalWorkouts}">
     <div class="container">
         <a href="programs" class="back-button">
             <i class="fas fa-arrow-left"></i>
@@ -153,17 +155,66 @@
                     <span>${workoutCount} тренировок</span>
                 </div>
             </div>
+            
+            <c:if test="${user != null}">
+                <div class="program-actions mt-4">
+                    <c:choose>
+                        <c:when test="${isEnrolled}">
+                            <form action="${pageContext.request.contextPath}/program" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="${program.id}">
+                                <input type="hidden" name="action" value="unsubscribe">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-times-circle me-2"></i>Отписаться от программы
+                                </button>
+                            </form>
+                        </c:when>
+                        <c:otherwise>
+                            <form action="${pageContext.request.contextPath}/program" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="${program.id}">
+                                <input type="hidden" name="action" value="subscribe">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus-circle me-2"></i>Записаться на программу
+                                </button>
+                            </form>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </c:if>
+            
+            <div class="progress-section mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>Прогресс программы</span>
+                    <span>${completedWorkouts} из ${totalWorkouts} тренировок</span>
+                </div>
+                <div class="progress" style="height: 10px; background: rgba(255, 255, 255, 0.1);">
+                    <div class="progress-bar bg-primary" role="progressbar" 
+                         style="width: ${progressPercentage}%;" 
+                         aria-valuenow="${progressPercentage}" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="workouts-section">
             <h2 class="mb-4">Тренировки</h2>
+            <div class="program-actions">
+                <c:if test="${isCreator}">
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addWorkoutModal">
+                        <i class="fas fa-plus"></i> Добавить тренировку
+                    </button>
+                </c:if>
+            </div>
             <div class="workouts-list">
                 <c:forEach items="${workouts}" var="workout">
                     <div class="workout-card">
                         <div class="workout-header">
                             <div>
                                 <span class="workout-day">День ${workout.dayNumber}</span>
-                                <h3 class="workout-title">${workout.title}</h3>
+                                <a href="/workout?id=${workout.id}" class="text-decoration-none">
+                                    <h3 class="workout-title text-white hover-primary">${workout.title}</h3>
+                                </a>
                             </div>
                             <a href="workout/edit?id=${workout.id}" class="btn-edit-workout">
                                 <i class="fas fa-edit"></i>
@@ -178,5 +229,76 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Модальное окно для добавления тренировки -->
+    <div class="modal fade" id="addWorkoutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title">Добавить тренировку</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="workout" method="post" id="addWorkoutForm">
+                        <input type="hidden" name="action" value="create">
+                        <input type="hidden" name="programId" value="${program.id}">
+
+                        <div class="mb-3">
+                            <label for="workoutTitle" class="form-label">Название тренировки</label>
+                            <input type="text" class="form-control bg-dark text-light" id="workoutTitle" name="title" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="workoutDescription" class="form-label">Описание</label>
+                            <textarea class="form-control bg-dark text-light" id="workoutDescription" name="description" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dayNumber" class="form-label">День программы</label>
+                            <input type="number" class="form-control bg-dark text-light" id="dayNumber" name="dayNumber" min="1" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" form="addWorkoutForm" class="btn btn-primary">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function updateProgress(){
+            const programId = document.getElementById('programId').value;
+            const totalWorkouts = document.getElementById('totalWorkouts').value;
+            fetch(`progress?programId=${programId}&totalWorkouts=${totalWorkouts}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const progressBar = document.querySelector('.progress-bar');
+                    const progressText = document.querySelector('.progress-text');
+
+                    progressBar.style.width = data.percentage + '%';
+                    progressBar.setAttribute('aria-valuenow', data.percentage);
+                    progressText.textContent = `${data.completed} из ${data.total} тренировок`;
+                })
+                .catch(error => {
+                    console.error('Error updating progress:', error);
+                });
+        }
+
+
+        setInterval(updateProgress, 5000);
+
+
+        document.querySelectorAll('.workout-complete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Даем небольшую задержку для обновления БД
+                setTimeout(updateProgress, 500);
+            });
+        });
+    </script>
 </body>
 </html>

@@ -12,6 +12,9 @@ public class Program {
         this.description = description;
         this.duration = duration;
     }
+    public Program(){
+
+    }
     public Program(int id, String title, String description, int duration, int createdBy) {
         this.id = id;
         this.title = title;

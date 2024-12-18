@@ -14,16 +14,31 @@ public class ProgramDao{
     private static final String INSERT_PROGRAM =
             "INSERT INTO programs (title, description, duration, created_by) VALUES (?, ?, ?, ?)";
 
-    public void save(Program program) {
+    public Program save(Program program) {
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PROGRAM)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PROGRAM, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, program.getTitle());
             preparedStatement.setString(2, program.getDescription());
             preparedStatement.setInt(3, program.getDuration());
-            preparedStatement.setInt(4, program.getCreatedBy()); // Передаем ID создателя
-            preparedStatement.executeUpdate();
+            preparedStatement.setInt(4, program.getCreatedBy());
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating program failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    program.setId(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Creating program failed, no ID obtained.");
+                }
+            }
+
+            return program;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -37,7 +52,8 @@ public class ProgramDao{
                         resultSet.getInt("id"),
                         resultSet.getString("title"),
                         resultSet.getString("description"),
-                        resultSet.getInt("duration")
+                        resultSet.getInt("duration"),
+                        resultSet.getInt("created_by")
                 ));
             }
         } catch (SQLException e) {
@@ -87,13 +103,15 @@ public class ProgramDao{
         return programs;
     }
 
-    public void delete(int id) {
+    public boolean delete(int id) {
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PROGRAM)) {
             preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+            int affected_rows = preparedStatement.executeUpdate();
+            return affected_rows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
     public void update(Program program) {

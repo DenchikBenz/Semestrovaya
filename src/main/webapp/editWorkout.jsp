@@ -132,9 +132,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Контейнер для уведомлений -->
-        <div id="toastContainer" class="toast-container"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

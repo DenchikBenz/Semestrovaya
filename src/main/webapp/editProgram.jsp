@@ -86,6 +86,7 @@
     </style>
 </head>
 <body>
+    <jsp:include page="/WEB-INF/includes/header.jsp" />
     <div class="container">
         <a href="programs" class="back-link">
             <i class="fas fa-arrow-left"></i> Назад к списку программ

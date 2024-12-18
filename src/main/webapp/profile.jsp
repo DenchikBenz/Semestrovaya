@@ -83,69 +83,32 @@
             border-radius: 8px;
             margin-bottom: 30px;
         }
-        .programs-list {
-            background-color: #252525;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        .program-item {
-            background-color: #1e1e1e;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #00adb5;
-        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="profile-photo-section">
-        <h3 style="color: #00adb5; margin-bottom: 20px; font-size: 1.5rem;">Фото профиля</h3>
-        <img id="imagePreview" src="${user.photoPath != null ? pageContext.request.contextPath.concat('/').concat(user.photoPath) : pageContext.request.contextPath.concat('/userPhotos/default-avatar.svg')}" alt="Profile Photo">
-        <div class="upload-controls">
-            <label class="custom-file-upload">
-                <input type="file" id="fileInput" accept="image/*">
-                Выбрать фото
-            </label>
-            <button id="uploadButton" disabled>Загрузить</button>
-        </div>
-    </div>
-    
-    <div class="header">Личный кабинет</div>
-    <div class="user-info">
-        <p><strong>Имя:</strong> <%= session.getAttribute("userName") %></p>
-        <p><strong>Email:</strong> <%= session.getAttribute("userEmail") %></p>
-        <p><strong>Роль:</strong> <%= session.getAttribute("userRole") %></p>
-    </div>
-
-    <div class="programs-list">
-        <h3 class="section-title">Мои программы</h3>
-        <% List<Program> programs = (List<Program>) request.getAttribute("programs");
-            if (programs != null && !programs.isEmpty()) {
-                for (Program program : programs) { %>
-        <div class="program-item">
-            <h4><%= program.getTitle() %></h4>
-            <p><%= program.getDescription() %></p>
-            <div class="progress mb-3" style="height: 20px;">
-                <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
-            </div>
-            <div class="d-flex justify-content-between">
-                <a href="program?id=<%= program.getId() %>" class="btn btn-primary">Перейти к программе</a>
-                <form action="program" method="post" style="display: inline;">
-                    <input type="hidden" name="id" value="<%= program.getId() %>">
-                    <input type="hidden" name="action" value="delete">
-                    <button type="submit" class="btn btn-danger">Удалить</button>
-                </form>
+    <jsp:include page="/WEB-INF/includes/header.jsp" />
+    <div class="container">
+        <div class="profile-photo-section">
+            <h3 style="color: #00adb5; margin-bottom: 20px; font-size: 1.5rem;">Фото профиля</h3>
+            <img id="imagePreview" src="${user.photoPath != null ? pageContext.request.contextPath.concat('/').concat(user.photoPath) : pageContext.request.contextPath.concat('/userPhotos/default-avatar.svg')}" alt="Profile Photo">
+            <div class="upload-controls">
+                <label class="custom-file-upload">
+                    <input type="file" id="fileInput" accept="image/*">
+                    Выбрать фото
+                </label>
+                <button id="uploadButton" disabled>Загрузить</button>
             </div>
         </div>
-        <% }
-        } else { %>
-        <p>У вас пока нет программ тренировок.</p>
-        <% } %>
+        
+        <div class="header">Личный кабинет</div>
+        <div class="user-info">
+            <p><strong>Имя:</strong> <%= session.getAttribute("userName") %></p>
+            <p><strong>Email:</strong> <%= session.getAttribute("userEmail") %></p>
+            <p><strong>Роль:</strong> <%= session.getAttribute("userRole") %></p>
+        </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/profile-upload.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/profile-upload.js"></script>
 </body>
 </html>

@@ -16,13 +16,18 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/profile")
+@WebServlet(urlPatterns = {"/profile", "/profile/"})
 public class ProfileServlet extends HttpServlet {
     private final ProgramService programService = new ProgramService();
     UserProgramDao userProgramDao = new UserProgramDao();
     ProgressDao progressDao = new ProgressDao();
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("ProfileServlet: doGet started");
+        System.out.println("Request URI: " + request.getRequestURI());
+        System.out.println("Context Path: " + request.getContextPath());
+        
         // Проверка авторизации
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
@@ -47,16 +52,23 @@ public class ProfileServlet extends HttpServlet {
         session.setAttribute("user", user);
         session.setAttribute("userName", user.getName());
         session.setAttribute("userEmail", user.getEmail());
+        System.out.println("Session attributes updated");
 
         // Получение связанных программ
         List<Program> userPrograms = programService.getUserPrograms(user.getId());
+        System.out.println("Found programs for user: " + userPrograms.size());
         request.setAttribute("userPrograms", userPrograms);
 
         // Переход на страницу профиля
+        System.out.println("Forwarding to profile.jsp");
         request.getRequestDispatcher("/profile.jsp").forward(request, response);
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("ProfileServlet: doPost started");
+        System.out.println("Request URI: " + req.getRequestURI());
+        System.out.println("Context Path: " + req.getContextPath());
+        
         User user = (User) req.getSession().getAttribute("user");
         if (user == null) {
             resp.sendRedirect("login.jsp");

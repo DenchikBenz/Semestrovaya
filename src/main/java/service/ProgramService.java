@@ -49,6 +49,15 @@ public class ProgramService {
     public void unenrollUserFromProgram(int userId, int programId) {
         userProgramDAO.disconnectProgram(userId, programId);
     }
+    /**
+     * Сохранить новую программу.
+     *
+     * @param program Программа для сохранения
+     * @return Сохраненная программа
+     */
+    public Program save(Program program) {
+        return programDAO.save(program);
+    }
 
     public void createProgram(String title, String description, int duration, int createdBy) {
         Program program = new Program(title, description, duration, createdBy);
@@ -97,5 +106,14 @@ public class ProgramService {
      */
     public List<Workout> getWorkoutsByProgramId(int programId) {
         return programDAO.getWorkoutsByProgramId(programId);
+    }
+    /**
+     * Удалить программу по ID.
+     *
+     * @param programId ID программы
+     * @return true если удаление прошло успешно, false в противном случае
+     */
+    public boolean deleteProgram(int programId) {
+        return programDAO.delete(programId);
     }
 }
