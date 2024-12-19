@@ -25,12 +25,7 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        // Логируем входные данные
-        System.out.println("Полученные данные:");
-        System.out.println("Имя: " + name);
-        System.out.println("Email: " + email);
-        System.out.println("Пароль: " + password);
-        System.out.println("Подтверждение пароля: " + confirmPassword);
+
 
         try {
             System.out.println("Перед регистрацией пользователя: Имя: " + name + ", Email: " + email);

@@ -2,18 +2,16 @@ package dao;
 import entity.Program;
 import entity.Workout;
 import util.DatabaseConnection;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 public class ProgramDao{
     private static final String SELECT_ALL_PROGRAMS = "SELECT * FROM programs";
     private static final String SELECT_PROGRAM_BY_ID = "SELECT * FROM programs WHERE id = ?";
     private static final String DELETE_PROGRAM = "DELETE FROM programs WHERE id = ?";
     private static final String INSERT_PROGRAM =
             "INSERT INTO programs (title, description, duration, created_by) VALUES (?, ?, ?, ?)";
-    private static final String SEARCH_PROGRAMS_BY_TITLE = 
+    private static final String SEARCH_PROGRAMS_BY_TITLE =
             "SELECT * FROM programs WHERE LOWER(title) LIKE LOWER(?)";
 
     public Program save(Program program) {
@@ -63,7 +61,7 @@ public class ProgramDao{
         }
         return programs;
     }
-    
+
     public Program findById(int id) {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(SELECT_PROGRAM_BY_ID)) {
@@ -71,11 +69,11 @@ public class ProgramDao{
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Program(
-                    rs.getInt("id"),
-                    rs.getString("title"),
-                    rs.getString("description"),
-                    rs.getInt("duration"),
-                    rs.getInt("created_by")
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getInt("duration"),
+                        rs.getInt("created_by")
                 );
             }
         } catch (SQLException e) {
@@ -150,23 +148,23 @@ public class ProgramDao{
     public List<Workout> getWorkoutsByProgramId(int programId) {
         List<Workout> workouts = new ArrayList<>();
         String sql = "SELECT * FROM workouts WHERE program_id = ? ORDER BY day_number";
-        
+
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            
+
             preparedStatement.setInt(1, programId);
             System.out.println("Executing SQL: " + sql + " with programId: " + programId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            
+
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String title = resultSet.getString("title");
                 String description = resultSet.getString("description");
                 int dayNumber = resultSet.getInt("day_number");
                 int progId = resultSet.getInt("program_id");
-                
+
                 System.out.println("Found workout: ID=" + id + ", Title=" + title + ", Day=" + dayNumber);
-                
+
                 Workout workout = new Workout(id, title, description, dayNumber, progId);
                 workouts.add(workout);
             }
@@ -182,9 +180,9 @@ public class ProgramDao{
         List<Program> programs = new ArrayList<>();
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_PROGRAMS_BY_TITLE)) {
-            
+
             preparedStatement.setString(1, "%" + query + "%");
-            
+
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     programs.add(new Program(
