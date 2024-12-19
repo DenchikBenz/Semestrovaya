@@ -42,7 +42,6 @@ public class CompleteWorkoutServlet extends HttpServlet {
                 return;
             }
 
-            // Проверяем, не выполнена ли уже тренировка
             if (workoutProgressDao.isWorkoutCompleted(userId, workoutId)) {
                 jsonResponse.addProperty("status", "error");
                 jsonResponse.addProperty("message", "Тренировка уже отмечена как выполненная");

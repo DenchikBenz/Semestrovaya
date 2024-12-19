@@ -20,7 +20,6 @@ public class ProgramsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Program> programs = programService.getAllPrograms();
         
-        // Get workout counts for each program
         Map<Integer, Integer> workoutCounts = new HashMap<>();
         for (Program program : programs) {
             workoutCounts.put(program.getId(), programService.getWorkoutCount(program.getId()));
