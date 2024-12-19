@@ -11,50 +11,26 @@ public class ProgramService {
     private final ProgramDao programDAO = new ProgramDao();
     private final UserProgramDao userProgramDAO = new UserProgramDao();
 
-    /**
-     * Получить список всех программ.
-     *
-     * @return Список всех программ
-     */
+
     public List<Program> getAllPrograms() {
         return programDAO.findAll();
     }
 
-    /**
-     * Получить список программ, привязанных к пользователю.
-     *
-     * @param userId ID пользователя
-     * @return Список программ пользователя
-     */
+
     public List<Program> getUserPrograms(int userId) {
         return userProgramDAO.findProgramsByUser(userId);
     }
 
-    /**
-     * Привязать пользователя к программе.
-     *
-     * @param userId    ID пользователя
-     * @param programId ID программы
-     */
+
     public void assignProgramToUser(int userId, int programId) {
         userProgramDAO.addUserToProgram(userId, programId);
     }
 
-    /**
-     * Отписать пользователя от программы.
-     *
-     * @param userId    ID пользователя
-     * @param programId ID программы
-     */
+
     public void unenrollUserFromProgram(int userId, int programId) {
         userProgramDAO.disconnectProgram(userId, programId);
     }
-    /**
-     * Сохранить новую программу.
-     *
-     * @param program Программа для сохранения
-     * @return Сохраненная программа
-     */
+
     public Program save(Program program) {
         return programDAO.save(program);
     }
@@ -73,23 +49,12 @@ public class ProgramService {
         programDAO.update(program);
     }
 
-    /**
-     * Получить программу по ID.
-     *
-     * @param id ID программы
-     * @return Программа
-     */
+
     public Program getProgramById(int id) {
         return programDAO.findById(id);
     }
 
-    /**
-     * Проверить, записан ли пользователь на программу.
-     *
-     * @param userId    ID пользователя
-     * @param programId ID программы
-     * @return true, если пользователь записан на программу
-     */
+
     public boolean isUserEnrolled(int userId, int programId) {
         return userProgramDAO.isUserEnrolled(userId, programId);
     }
@@ -98,21 +63,19 @@ public class ProgramService {
         return programDAO.getWorkoutCount(programId);
     }
 
-    /**
-     * Получить список тренировок для программы
-     *
-     * @param programId ID программы
-     * @return Список тренировок
-     */
+
+    public List<Program> searchPrograms(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return getAllPrograms();
+        }
+        return programDAO.searchByTitle(query.trim());
+    }
+
+
     public List<Workout> getWorkoutsByProgramId(int programId) {
         return programDAO.getWorkoutsByProgramId(programId);
     }
-    /**
-     * Удалить программу по ID.
-     *
-     * @param programId ID программы
-     * @return true если удаление прошло успешно, false в противном случае
-     */
+
     public boolean deleteProgram(int programId) {
         return programDAO.delete(programId);
     }

@@ -40,12 +40,9 @@
     <div class="container mt-4">
         <h2>Редактирование тренировки: ${workout.title}</h2>
         
-        <!-- Список упражнений -->
         <div id="exercisesContainer" class="row mt-4">
-            <!-- Упражнения будут добавлены через JavaScript -->
         </div>
 
-        <!-- Форма добавления упражнения -->
         <div class="card mt-4">
             <div class="card-header">
                 <h3>Добавить упражнение</h3>
@@ -60,7 +57,6 @@
                     <div class="mb-3">
                         <label for="muscleGroupId" class="form-label">Группа мышц</label>
                         <select class="form-control muscle-group-select" id="muscleGroupId" name="muscleGroupId" required>
-                            <!-- Группы мышц будут добавлены через JavaScript -->
                         </select>
                     </div>
                     <div class="mb-3">
@@ -86,7 +82,6 @@
             </div>
         </div>
 
-        <!-- Модальное окно редактирования -->
         <div class="modal fade" id="editExerciseModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">

@@ -26,13 +26,10 @@ public class GetExercisesServlet extends HttpServlet {
         Map<String, Object> result = new HashMap<>();
 
         try {
-            // Получаем ID тренировки из параметров запроса
             int workoutId = Integer.parseInt(request.getParameter("workoutId"));
             
-            // Получаем список упражнений
             List<Exercise> exercises = exerciseService.getExercisesByWorkoutId(workoutId);
             
-            // Формируем успешный ответ
             result.put("status", "success");
             result.put("exercises", exercises);
         } catch (NumberFormatException e) {

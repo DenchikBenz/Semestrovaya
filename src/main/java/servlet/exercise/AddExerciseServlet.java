@@ -25,13 +25,10 @@ public class AddExerciseServlet extends HttpServlet {
         Map<String, Object> result = new HashMap<>();
 
         try {
-            // Читаем JSON из тела запроса
             Exercise exercise = gson.fromJson(request.getReader(), Exercise.class);
             
-            // Добавляем упражнение
             Exercise savedExercise = exerciseService.addExercise(exercise);
             
-            // Формируем успешный ответ
             result.put("status", "success");
             result.put("exercise", savedExercise);
             response.setStatus(HttpServletResponse.SC_CREATED);

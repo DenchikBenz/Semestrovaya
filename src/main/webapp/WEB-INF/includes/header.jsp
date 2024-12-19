@@ -3,12 +3,10 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
     <div class="container">
-        <!-- Логотип слева -->
         <a class="navbar-brand" href="${pageContext.request.contextPath}/">
             FitTracker
         </a>
 
-        <!-- Навигация справа -->
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -25,7 +23,6 @@
                     </li>
                 </c:if>
 
-                <!-- Профиль -->
                 <c:choose>
                     <c:when test="${not empty sessionScope.userId}">
                         <li class="nav-item dropdown">

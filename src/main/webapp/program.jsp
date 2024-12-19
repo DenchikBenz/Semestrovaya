@@ -216,10 +216,12 @@
                                     <h3 class="workout-title text-white hover-primary">${workout.title}</h3>
                                 </a>
                             </div>
-                            <a href="workout/edit?id=${workout.id}" class="btn-edit-workout">
-                                <i class="fas fa-edit"></i>
-                                Редактировать
-                            </a>
+                            <c:if test="${isCreator}">
+                                <a href="workout/edit?id=${workout.id}" class="btn-edit-workout">
+                                    <i class="fas fa-edit"></i>
+                                    Редактировать
+                                </a>
+                            </c:if>
                         </div>
                         <p class="workout-description">${workout.description}</p>
                     </div>
@@ -229,7 +231,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Модальное окно для добавления тренировки -->
     <div class="modal fade" id="addWorkoutModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-light">
@@ -254,7 +255,15 @@
 
                         <div class="mb-3">
                             <label for="dayNumber" class="form-label">День программы</label>
-                            <input type="number" class="form-control bg-dark text-light" id="dayNumber" name="dayNumber" min="1" required>
+                            <input type="number" class="form-control bg-dark text-light" 
+                                   id="dayNumber" 
+                                   name="dayNumber" 
+                                   min="1" 
+                                   max="${program.duration}"
+                                   required>
+                            <div class="form-text text-muted">
+                                Выберите день от 1 до ${program.duration}
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -289,15 +298,36 @@
                 });
         }
 
-
         setInterval(updateProgress, 5000);
-
 
         document.querySelectorAll('.workout-complete-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                // Даем небольшую задержку для обновления БД
                 setTimeout(updateProgress, 500);
             });
+        });
+
+        // Валидация дня тренировки
+        document.getElementById('dayNumber').addEventListener('input', function(e) {
+            const max = parseInt(this.getAttribute('max'));
+            const value = parseInt(this.value);
+            
+            if (value > max) {
+                this.value = max;
+            } else if (value < 1) {
+                this.value = 1;
+            }
+        });
+
+        // Валидация формы перед отправкой
+        document.getElementById('addWorkoutForm').addEventListener('submit', function(e) {
+            const dayInput = document.getElementById('dayNumber');
+            const max = parseInt(dayInput.getAttribute('max'));
+            const value = parseInt(dayInput.value);
+            
+            if (value < 1 || value > max) {
+                e.preventDefault();
+                alert(`День должен быть в диапазоне от 1 до ${max}`);
+            }
         });
     </script>
 </body>

@@ -22,7 +22,6 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Получение данных из формы
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 

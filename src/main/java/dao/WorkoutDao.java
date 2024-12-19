@@ -62,7 +62,6 @@ public class WorkoutDao {
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
                     Workout workout = mapResultSetToWorkout(rs);
-                    // Загружаем упражнения для тренировки
                     workout.setExercises(exerciseDao.findByWorkoutId(workout.getId()));
                     return workout;
                 }
@@ -105,12 +104,9 @@ public class WorkoutDao {
 
             preparedStatement.executeUpdate();
 
-            // Обновляем упражнения
             if (workout.getExercises() != null) {
-                // Получаем текущие упражнения
                 List<entity.Exercise> currentExercises = exerciseDao.findByWorkoutId(workout.getId());
 
-                // Удаляем упражнения, которых больше нет в обновленном списке
                 currentExercises.forEach(exercise -> {
                     if (!workout.getExercises().contains(exercise)) {
                         exerciseDao.delete(exercise.getId());
@@ -139,7 +135,6 @@ public class WorkoutDao {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
 
-            // Упражнения удалятся автоматически благодаря ON DELETE CASCADE
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting workout: " + id, e);
         }
@@ -155,7 +150,6 @@ public class WorkoutDao {
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
                     Workout workout = mapResultSetToWorkout(rs);
-                    // Загружаем упражнения для тренировки
                     workout.setExercises(exerciseDao.findByWorkoutId(workout.getId()));
                     return workout;
                 }

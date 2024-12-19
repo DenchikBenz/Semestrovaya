@@ -14,7 +14,6 @@ public class Workout {
     public Workout() {
         this.exercises = new ArrayList<>();
     }
-    // Конструктор для создания новой тренировки
     public Workout(String title, String description, int dayNumber, int programId) {
         this.title = title;
         this.description = description;
@@ -23,7 +22,6 @@ public class Workout {
         this.exercises = new ArrayList<>();
     }
 
-    // Конструктор для существующей тренировки
     public Workout(int id, String title, String description, int dayNumber, int programId) {
         this.id = id;
         this.title = title;
@@ -33,7 +31,6 @@ public class Workout {
         this.exercises = new ArrayList<>();
     }
 
-    // Геттеры
     public int getId() {
         return id;
     }
@@ -83,7 +80,6 @@ public class Workout {
         this.exercises = exercises;
     }
 
-    // Вспомогательные методы для работы с упражнениями
     public void addExercise(Exercise exercise) {
         if (this.exercises == null) {
             this.exercises = new ArrayList<>();

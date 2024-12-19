@@ -1,4 +1,3 @@
-// Функция для загрузки упражнений
 function loadExercises(workoutId) {
     fetch(`/api/exercise/list?workoutId=${workoutId}`)
         .then(response => response.json())
@@ -12,7 +11,6 @@ function loadExercises(workoutId) {
         .catch(error => showError('Ошибка при загрузке упражнений'));
 }
 
-// Функция для отображения упражнений
 function displayExercises(exercises) {
     const container = document.getElementById('exercisesContainer');
     container.innerHTML = '';
@@ -23,7 +21,6 @@ function displayExercises(exercises) {
     });
 }
 
-// Создание карточки упражнения
 function createExerciseCard(exercise) {
     const card = document.createElement('div');
     card.className = 'exercise-card';
@@ -51,7 +48,6 @@ function createExerciseCard(exercise) {
     return card;
 }
 
-// Добавление нового упражнения
 function addExercise(event) {
     event.preventDefault();
     const form = document.getElementById('addExerciseForm');
@@ -84,9 +80,7 @@ function addExercise(event) {
     .catch(error => showError('Ошибка при добавлении упражнения'));
 }
 
-// Редактирование упражнения
 function editExercise(exerciseId) {
-    // Получаем данные упражнения и заполняем форму
     const exercise = document.querySelector(`[data-exercise-id="${exerciseId}"]`);
     const form = document.getElementById('editExerciseForm');
     
@@ -96,12 +90,10 @@ function editExercise(exerciseId) {
     form.sets.value = exercise.querySelector('.sets').textContent.split(': ')[1];
     form.reps.value = exercise.querySelector('.reps').textContent.split(': ')[1];
     
-    // Показываем модальное окно редактирования
     const editModal = new bootstrap.Modal(document.getElementById('editExerciseModal'));
     editModal.show();
 }
 
-// Обновление упражнения
 function updateExercise(event) {
     event.preventDefault();
     const form = document.getElementById('editExerciseForm');
@@ -135,7 +127,6 @@ function updateExercise(event) {
     .catch(error => showError('Ошибка при обновлении упражнения'));
 }
 
-// Удаление упражнения
 function deleteExercise(exerciseId) {
     if (confirm('Вы уверены, что хотите удалить это упражнение?')) {
         fetch(`/api/exercise/delete?id=${exerciseId}`, {
@@ -154,7 +145,6 @@ function deleteExercise(exerciseId) {
     }
 }
 
-// Загрузка групп мышц
 function loadMuscleGroups() {
     fetch('/api/musclegroups')
         .then(response => response.json())
@@ -171,7 +161,6 @@ function loadMuscleGroups() {
         .catch(error => showError('Ошибка при загрузке групп мышц'));
 }
 
-// Вспомогательные функции для уведомлений
 function showSuccess(message) {
     const toast = createToast('success', message);
     toast.show();
@@ -201,13 +190,11 @@ function createToast(type, message) {
     return new bootstrap.Toast(toastElement);
 }
 
-// Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     const workoutId = document.getElementById('workoutId').value;
     loadExercises(workoutId);
     loadMuscleGroups();
     
-    // Привязка обработчиков событий
     document.getElementById('addExerciseForm').addEventListener('submit', addExercise);
     document.getElementById('editExerciseForm').addEventListener('submit', updateExercise);
 });

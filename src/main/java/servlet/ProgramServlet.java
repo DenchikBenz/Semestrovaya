@@ -21,7 +21,6 @@ public class ProgramServlet extends HttpServlet {
     private final WorkoutProgressDao workoutProgressDao = new WorkoutProgressDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Получаем ID программы из параметров запроса
         String programId = request.getParameter("id");
         if (programId == null || programId.isEmpty()) {
             response.sendRedirect("programs");
@@ -29,14 +28,11 @@ public class ProgramServlet extends HttpServlet {
         }
 
         try {
-            // Получаем программу по ID
             Program program = programService.getProgramById(Integer.parseInt(programId));
             if (program == null) {
                 response.sendRedirect("programs");
                 return;
             }
-
-            // Получаем текущего пользователя из сессии
             HttpSession session = request.getSession();
             User currentUser = (User) session.getAttribute("user");
 
@@ -84,7 +80,6 @@ public class ProgramServlet extends HttpServlet {
             return;
         }
 
-        // Получаем текущего пользователя из сессии
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("user");
 
@@ -97,7 +92,6 @@ public class ProgramServlet extends HttpServlet {
             int userId = currentUser.getId();
             int progId = Integer.parseInt(programId);
 
-            // Обрабатываем действие пользователя
             switch (action) {
                 case "enroll":
                     programService.assignProgramToUser(userId, progId);
@@ -115,7 +109,6 @@ public class ProgramServlet extends HttpServlet {
                     break;
             }
 
-            // Перенаправляем обратно на страницу программы
             response.sendRedirect("program?id=" + programId);
 
         } catch (NumberFormatException e) {

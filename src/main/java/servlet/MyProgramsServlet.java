@@ -30,17 +30,14 @@ public class MyProgramsServlet extends HttpServlet {
             return;
         }
 
-        // Получаем программы пользователя через ProgramService
         List<Program> userPrograms = programService.getUserPrograms(userId);
         
-        // Получаем количество тренировок для каждой программы
         Map<Integer, Integer> workoutCounts = userPrograms.stream()
             .collect(Collectors.toMap(
                 Program::getId,
                 program -> programService.getWorkoutsByProgramId(program.getId()).size()
             ));
 
-        // Получаем количество выполненных тренировок для каждой программы
         Map<Integer, Integer> completedWorkouts = userPrograms.stream()
             .collect(Collectors.toMap(
                 Program::getId,

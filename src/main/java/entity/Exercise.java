@@ -22,7 +22,6 @@ public class Exercise {
         this.reps = reps;
     }
 
-    // Геттеры и сеттеры
     public int getId() {
         return id;
     }

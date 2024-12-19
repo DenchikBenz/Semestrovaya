@@ -10,54 +10,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
-            background: linear-gradient(-45deg, #000000, #1a1a1a, #2d2d2d, #000000);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
+            background-color: #000000;
             color: #fff;
             min-height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
         }
 
         .form-control {
             background-color: rgba(255, 255, 255, 0.1) !important;
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff !important;
-            transition: all 0.3s ease;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            border-radius: 8px;
-            width: 100%;
-            margin-bottom: 1rem;
         }
 
         .form-control:focus {
             background-color: rgba(255, 255, 255, 0.15) !important;
             border-color: rgba(255, 255, 255, 0.3);
             box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
-            outline: none;
         }
 
         .form-control::placeholder {
             color: rgba(255, 255, 255, 0.5);
         }
 
-        /* Исправляем стили автозаполнения */
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
         input:-webkit-autofill:focus {
@@ -66,165 +39,115 @@
             caret-color: #fff;
         }
 
-        .btn-primary {
-            background: linear-gradient(45deg, #2196F3, #00BCD4);
-            border: none;
-            padding: 0.75rem;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            width: 100%;
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(45deg, #1976D2, #0097A7);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
-        }
-
-        .registration-container {
+        .register-card {
             background: rgba(17, 17, 17, 0.95);
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            max-width: 400px;
-            margin: 2rem;
-        }
-
-        .form-floating {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .form-floating label {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .error, .success {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .error {
-            background-color: rgba(231, 76, 60, 0.2);
-            border: 1px solid rgba(231, 76, 60, 0.3);
-            color: #e74c3c;
-        }
-
-        .success {
-            background-color: rgba(46, 204, 113, 0.2);
-            border: 1px solid rgba(46, 204, 113, 0.3);
-            color: #2ecc71;
-        }
-
-        .input-group-text {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-        }
-
-        .form-floating > .form-control {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            height: calc(3.5rem + 2px);
-            line-height: 1.25;
-        }
-
-        .form-floating > label {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .form-floating > .form-control:focus ~ label,
-        .form-floating > .form-control:not(:placeholder-shown) ~ label {
-            color: rgba(255, 255, 255, 0.9);
-            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
         }
     </style>
 </head>
-<body>
-<div class="container">
-    <div class="registration-container">
-        <h1 class="text-center mb-4">
-            <i class="fas fa-user-plus me-2"></i>Регистрация
-        </h1>
-        <form action="register" method="post" class="needs-validation" novalidate>
-            <div class="form-group">
-                <input type="text" class="form-control" id="name" name="name" 
-                       placeholder="Имя" required>
-            </div>
+<body class="d-flex align-items-center justify-content-center">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="register-card p-4 rounded-4 shadow">
+                    <h1 class="text-center mb-4">
+                        <i class="fas fa-user-plus me-2"></i>Регистрация
+                    </h1>
+                    <form action="register" method="post" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-user me-2"></i>Имя
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="name" 
+                                   name="name" 
+                                   placeholder="Введите имя" 
+                                   required>
+                            <div class="invalid-feedback text-light">
+                                Пожалуйста, введите имя
+                            </div>
+                        </div>
 
-            <div class="form-group">
-                <input type="email" class="form-control" id="email" name="email" 
-                       placeholder="Email" required>
-            </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope me-2"></i>Email
+                            </label>
+                            <input type="email" 
+                                   class="form-control" 
+                                   id="email" 
+                                   name="email" 
+                                   placeholder="name@example.com" 
+                                   required>
+                            <div class="invalid-feedback text-light">
+                                Пожалуйста, введите корректный email
+                            </div>
+                        </div>
 
-            <div class="form-group">
-                <input type="password" class="form-control" id="password" name="password" 
-                       placeholder="Пароль" required>
-            </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock me-2"></i>Пароль
+                            </label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password" 
+                                   name="password" 
+                                   placeholder="Введите пароль" 
+                                   required>
+                            <div class="invalid-feedback text-light">
+                                Пожалуйста, введите пароль
+                            </div>
+                        </div>
 
-            <div class="form-group">
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" 
-                       placeholder="Подтвердите пароль" required>
-                <div id="passwordError" class="error" style="display: none;">
-                    Пароли не совпадают
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">
+                                <i class="fas fa-lock me-2"></i>Подтвердите пароль
+                            </label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="confirmPassword" 
+                                   name="confirmPassword" 
+                                   placeholder="Подтвердите пароль" 
+                                   required>
+                            <div class="invalid-feedback text-light">
+                                Пожалуйста, подтвердите пароль
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
+                            <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                        </button>
+
+                        <p class="text-center mb-0">
+                            Уже есть аккаунт? 
+                            <a href="/login" class="text-primary text-decoration-none">Войти</a>
+                        </p>
+                    </form>
+
+                    <% if (request.getAttribute("error") != null) { %>
+                    <div class="alert alert-danger mt-3 text-center" role="alert">
+                        <%= request.getAttribute("error") %>
+                    </div>
+                    <% } %>
                 </div>
             </div>
-
-            <button type="submit" class="btn btn-primary" id="submitButton" disabled>
-                <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
-            </button>
-
-            <p class="text-center mt-3">
-                Уже есть аккаунт? <a href="/login" class="text-decoration-none text-primary">Войти</a>
-            </p>
-        </form>
-
-        <% if (request.getAttribute("error") != null) { %>
-        <div class="error">
-            <%= request.getAttribute("error") %>
         </div>
-        <% } %>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const password = document.getElementById('password');
-        const confirmPassword = document.getElementById('confirmPassword');
-        const passwordError = document.getElementById('passwordError');
-        const submitButton = document.getElementById('submitButton');
-
-        function checkPasswords() {
-            if (password.value === '' || confirmPassword.value === '') {
-                passwordError.style.display = 'none';
-                submitButton.disabled = true;
-                return;
-            }
-
-            if (password.value === confirmPassword.value) {
-                passwordError.style.display = 'none';
-                submitButton.disabled = false;
-            } else {
-                passwordError.style.display = 'block';
-                submitButton.disabled = true;
-            }
-        }
-
-        password.addEventListener('input', checkPasswords);
-        confirmPassword.addEventListener('input', checkPasswords);
-    });
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                });
+            });
+        });
+    </script>
 </body>
 </html>

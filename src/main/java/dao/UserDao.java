@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDao {
+    private static final String UPDATE_USER = "UPDATE users SET name = ?, email = ? WHERE id = ?";
     private static final String INSERT_USER = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
     private static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
     private static final String UPDATE_USER_PHOTO = "UPDATE users SET photo_path = ? WHERE id = ?";
@@ -79,6 +80,23 @@ public class UserDao {
             e.printStackTrace();
             throw new RuntimeException("Error updating user photo", e);
         }
+    }
+
+    public User update(User user) {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER)) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setInt(3, user.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

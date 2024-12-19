@@ -79,13 +79,7 @@ public class UserProgramDao {
             e.printStackTrace();
         }
     }
-    /**
-     * Проверяет, является ли пользователь создателем программы
-     *
-     * @param userId ID пользователя
-     * @param programId ID программы
-     * @return true если пользователь является создателем, false в противном случае
-     */
+
     public boolean isUserProgramCreator(int userId, int programId) {
         String sql = "SELECT 1 FROM programs WHERE id = ? AND created_by = ?";
 

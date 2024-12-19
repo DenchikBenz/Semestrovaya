@@ -26,10 +26,8 @@ public class GetMuscleGroupsServlet extends HttpServlet {
         Map<String, Object> result = new HashMap<>();
 
         try {
-            // Получаем список всех групп мышц
             List<MuscleGroup> muscleGroups = muscleGroupService.getAllMuscleGroups();
             
-            // Формируем успешный ответ
             result.put("status", "success");
             result.put("muscleGroups", muscleGroups);
         } catch (Exception e) {

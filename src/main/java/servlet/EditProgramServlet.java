@@ -21,7 +21,6 @@ public class EditProgramServlet extends HttpServlet {
         String description = request.getParameter("description");
         int duration = Integer.parseInt(request.getParameter("duration"));
 
-        // Получаем ID текущего пользователя из сессии
         Integer currentUserId = (Integer) request.getSession().getAttribute("userId");
 
         if (currentUserId == null) {
@@ -40,10 +39,8 @@ public class EditProgramServlet extends HttpServlet {
             return;
         }
 
-        // Если проверка пройдена, обновляем программу
         programService.updateProgram(programId, title, description, duration);
 
-        // Перенаправляем пользователя на страницу со списком программ
         response.sendRedirect("programs");
     }
 
@@ -56,14 +53,12 @@ public class EditProgramServlet extends HttpServlet {
         }
 
         try {
-            // Получаем программу по ID
             Program program = programService.getProgramById(Integer.parseInt(programId));
             if (program == null) {
                 response.sendRedirect("programs");
                 return;
             }
 
-            // Получаем текущего пользователя из сессии
             Integer currentUserId = (Integer) request.getSession().getAttribute("userId");
             if (currentUserId == null) {
                 request.setAttribute("error", "Для редактирования программы необходимо авторизоваться");
@@ -77,7 +72,6 @@ public class EditProgramServlet extends HttpServlet {
                 return;
             }
 
-            // Устанавливаем атрибуты и отображаем страницу редактирования
             request.setAttribute("program", program);
             request.getRequestDispatcher("editProgram.jsp").forward(request, response);
 

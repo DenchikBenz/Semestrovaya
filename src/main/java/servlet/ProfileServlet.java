@@ -28,7 +28,6 @@ public class ProfileServlet extends HttpServlet {
         System.out.println("Request URI: " + request.getRequestURI());
         System.out.println("Context Path: " + request.getContextPath());
         
-        // Проверка авторизации
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             System.out.println("Session or userId is null: " + (session == null ? "session is null" : "userId is null"));
@@ -36,7 +35,6 @@ public class ProfileServlet extends HttpServlet {
             return;
         }
 
-        // Получение текущего пользователя из базы данных
         Integer userId = (Integer) session.getAttribute("userId");
         System.out.println("Got userId from session: " + userId);
         UserDao userDao = new UserDao();
@@ -48,18 +46,15 @@ public class ProfileServlet extends HttpServlet {
             return;
         }
 
-        // Обновляем данные в сессии
         session.setAttribute("user", user);
         session.setAttribute("userName", user.getName());
         session.setAttribute("userEmail", user.getEmail());
         System.out.println("Session attributes updated");
 
-        // Получение связанных программ
         List<Program> userPrograms = programService.getUserPrograms(user.getId());
         System.out.println("Found programs for user: " + userPrograms.size());
         request.setAttribute("userPrograms", userPrograms);
 
-        // Переход на страницу профиля
         System.out.println("Forwarding to profile.jsp");
         request.getRequestDispatcher("/profile.jsp").forward(request, response);
     }

@@ -25,13 +25,10 @@ public class UpdateExerciseServlet extends HttpServlet {
         Map<String, Object> result = new HashMap<>();
 
         try {
-            // Читаем JSON из тела запроса
             Exercise exercise = gson.fromJson(request.getReader(), Exercise.class);
             
-            // Обновляем упражнение
             exerciseService.updateExercise(exercise);
             
-            // Формируем успешный ответ
             result.put("status", "success");
             result.put("message", "Упражнение успешно обновлено");
         } catch (IllegalArgumentException e) {

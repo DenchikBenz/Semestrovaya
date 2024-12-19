@@ -13,6 +13,8 @@ public class ProgramDao{
     private static final String DELETE_PROGRAM = "DELETE FROM programs WHERE id = ?";
     private static final String INSERT_PROGRAM =
             "INSERT INTO programs (title, description, duration, created_by) VALUES (?, ?, ?, ?)";
+    private static final String SEARCH_PROGRAMS_BY_TITLE = 
+            "SELECT * FROM programs WHERE LOWER(title) LIKE LOWER(?)";
 
     public Program save(Program program) {
         try (Connection connection = DatabaseConnection.getConnection();
@@ -61,26 +63,27 @@ public class ProgramDao{
         }
         return programs;
     }
+    
     public Program findById(int id) {
-        String sql = "SELECT * FROM programs WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SELECT_PROGRAM_BY_ID)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
                 return new Program(
-                        resultSet.getInt("id"),
-                        resultSet.getString("title"),
-                        resultSet.getString("description"),
-                        resultSet.getInt("duration"),
-                        resultSet.getInt("created_by") // Учитываем createdBy
+                    rs.getInt("id"),
+                    rs.getString("title"),
+                    rs.getString("description"),
+                    rs.getInt("duration"),
+                    rs.getInt("created_by")
                 );
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error getting program by id", e);
         }
         return null;
     }
+
     public List<Program> findByCreator(int userId) {
         List<Program> programs = new ArrayList<>();
         String sql = "SELECT * FROM programs WHERE created_by = ?";
@@ -114,6 +117,7 @@ public class ProgramDao{
             return false;
         }
     }
+
     public void update(Program program) {
         String sql = "UPDATE programs SET title = ?, description = ?, duration = ? WHERE id = ?";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -143,12 +147,6 @@ public class ProgramDao{
         return 0;
     }
 
-    /**
-     * Получить список тренировок для программы
-     *
-     * @param programId ID программы
-     * @return Список тренировок
-     */
     public List<Workout> getWorkoutsByProgramId(int programId) {
         List<Workout> workouts = new ArrayList<>();
         String sql = "SELECT * FROM workouts WHERE program_id = ? ORDER BY day_number";
@@ -180,4 +178,27 @@ public class ProgramDao{
         return workouts;
     }
 
+    public List<Program> searchByTitle(String query) {
+        List<Program> programs = new ArrayList<>();
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_PROGRAMS_BY_TITLE)) {
+            
+            preparedStatement.setString(1, "%" + query + "%");
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    programs.add(new Program(
+                            resultSet.getInt("id"),
+                            resultSet.getString("title"),
+                            resultSet.getString("description"),
+                            resultSet.getInt("duration"),
+                            resultSet.getInt("created_by")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return programs;
+    }
 }

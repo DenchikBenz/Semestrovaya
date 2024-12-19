@@ -152,9 +152,30 @@
       </div>
     </c:if>
   </div>
+
+  <div class="exercises-section mt-4">
+    <h2 class="text-info mb-4">Упражнения</h2>
+    <div class="row">
+      <c:forEach items="${exercises}" var="exercise">
+        <div class="col-md-6 mb-4">
+          <div class="exercise-card p-3 bg-dark rounded">
+            <h3 class="h5 text-info">${exercise.name}</h3>
+            <p class="text-muted mb-2">
+              <i class="fas fa-dumbbell me-2"></i>${exercise.muscleGroup.name}
+            </p>
+            <p class="small mb-2">${exercise.description}</p>
+            <div class="d-flex justify-content-between text-light">
+              <span><i class="fas fa-layer-group me-2"></i>${exercise.sets} подходов</span>
+              <span><i class="fas fa-redo me-2"></i>${exercise.reps} повторений</span>
+            </div>
+          </div>
+        </div>
+      </c:forEach>
+    </div>
+  </div>
+
 </div>
 
-<!-- Модальное окно для редактирования -->
 <c:if test="${canEdit}">
   <div class="modal fade" id="editWorkoutModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -237,18 +258,4 @@
   }
 </script>
 </body>
-<!-- Debug info -->
-<div style="background: rgba(0,0,0,0.8); color: white; padding: 10px; margin: 10px; border-radius: 5px;">
-  <h6>Debug Information:</h6>
-  <pre>
-    workout.id = ${workout.id}
-    workout.title = ${workout.title}
-    workout.description = ${workout.description}
-    workout.dayNumber = ${workout.dayNumber}
-    workout.programId = ${workout.programId}
-    isCompleted = ${isCompleted}
-    canEdit = ${canEdit}
-    userId = ${sessionScope.userId}
-    </pre>
-</div>
 </html>

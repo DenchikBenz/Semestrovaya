@@ -24,13 +24,10 @@ public class DeleteExerciseServlet extends HttpServlet {
         Map<String, Object> result = new HashMap<>();
 
         try {
-            // Получаем ID упражнения из параметров запроса
             int exerciseId = Integer.parseInt(request.getParameter("id"));
             
-            // Удаляем упражнение
             exerciseService.deleteExercise(exerciseId);
             
-            // Формируем успешный ответ
             result.put("status", "success");
             result.put("message", "Упражнение успешно удалено");
         } catch (NumberFormatException e) {

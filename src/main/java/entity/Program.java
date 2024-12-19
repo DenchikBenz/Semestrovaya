@@ -6,15 +6,17 @@ public class Program {
     private String description;
     private int duration;
     private int createdBy;
+
     public Program(int id, String title, String description, int duration) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.duration = duration;
     }
-    public Program(){
 
+    public Program(){
     }
+
     public Program(int id, String title, String description, int duration, int createdBy) {
         this.id = id;
         this.title = title;
