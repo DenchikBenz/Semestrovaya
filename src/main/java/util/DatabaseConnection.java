@@ -20,7 +20,6 @@ public class DatabaseConnection {
                 baseProperties.load(baseInput);
             }
 
-            // Определяем активный профиль
             String activeProfile = baseProperties.getProperty("active.profile", "dev");
             String profileFile = "application-" + activeProfile + ".properties";
 
