@@ -2,7 +2,6 @@ package dao;
 import entity.Exercise;
 import entity.MuscleGroup;
 import util.DatabaseConnection;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

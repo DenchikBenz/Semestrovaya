@@ -40,7 +40,7 @@
     <div class="container mt-4">
         <h2>Редактирование тренировки: ${workout.title}</h2>
         
-        <div id="exercisesContainer" class="row mt-4">
+        <div id="exercisesContainer" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
         </div>
 
         <div class="card mt-4">
@@ -91,8 +91,8 @@
                     </div>
                     <div class="modal-body">
                         <form id="editExerciseForm">
-                            <input type="hidden" id="exerciseId" name="exerciseId">
-                            <input type="hidden" id="workoutId" name="workoutId" value="${workout.id}">
+                            <input type="hidden" id="editExerciseId" name="exerciseId">
+                            <input type="hidden" id="editWorkoutId" name="workoutId" value="${workout.id}">
                             <div class="mb-3">
                                 <label for="editName" class="form-label">Название упражнения</label>
                                 <input type="text" class="form-control" id="editName" name="name" required>
@@ -127,6 +127,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

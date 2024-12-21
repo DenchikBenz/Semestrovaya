@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @WebServlet("/api/exercise/update")
 public class UpdateExerciseServlet extends HttpServlet {
     private final ExerciseService exerciseService = new ExerciseService();

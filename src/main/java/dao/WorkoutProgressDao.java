@@ -2,6 +2,7 @@ package dao;
 import util.DatabaseConnection;
 import java.sql.*;
 
+
 public class WorkoutProgressDao {
     public void markWorkoutAsCompleted(int userId, int workoutId, Timestamp completionDate) {
         String sql = "INSERT INTO workout_progress (user_id, workout_id, completed, completion_date) " +

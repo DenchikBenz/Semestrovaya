@@ -1,5 +1,6 @@
 package entity;
 
+
 public class User {
     private int id;
     private String name;
@@ -24,7 +25,6 @@ public class User {
         this.role = role;
     }
     public User(String name, String email, String password, String role) {
-
         this.name = name;
         this.email = email;
         this.password = password;

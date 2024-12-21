@@ -20,6 +20,7 @@ public class AuthService {
         userDAO.save(user);
     }
 
+
     public User loginUser(String email, String password) {
         User user = userDAO.findByEmail(email);
         if (user == null) {

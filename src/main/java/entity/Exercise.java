@@ -22,6 +22,7 @@ public class Exercise {
         this.reps = reps;
     }
 
+
     public int getId() {
         return id;
     }

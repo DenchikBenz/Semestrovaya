@@ -6,6 +6,7 @@ import java.util.List;
 public class ExerciseService {
     private final ExerciseDao exerciseDao = new ExerciseDao();
 
+
     public Exercise addExercise(Exercise exercise) {
         validateExercise(exercise);
         return exerciseDao.save(exercise);

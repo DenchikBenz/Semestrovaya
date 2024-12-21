@@ -1,5 +1,6 @@
 package entity;
 
+
 public class MuscleGroup {
     private int id;
     private String name;

@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @WebServlet("/api/musclegroups")
 public class GetMuscleGroupsServlet extends HttpServlet {
     private final MuscleGroupService muscleGroupService = new MuscleGroupService();

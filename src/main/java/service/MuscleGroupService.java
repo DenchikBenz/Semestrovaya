@@ -2,6 +2,7 @@ package service;
 import dao.MuscleGroupDao;
 import entity.MuscleGroup;
 import java.util.List;
+
 public class MuscleGroupService {
     private final MuscleGroupDao muscleGroupDao = new MuscleGroupDao();
     public List<MuscleGroup> getAllMuscleGroups() {

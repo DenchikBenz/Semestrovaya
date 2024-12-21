@@ -130,27 +130,10 @@
         ${workout.description}
       </div>
     </div>
-    <button type="button"
-            class="btn ${isCompleted ? 'btn-secondary' : 'btn-success'} mb-3 complete-workout-btn"
-            onclick="markWorkoutAsCompleted(${workout.id})"
+    <button onclick="markWorkoutAsCompleted(${workout.id})" class="btn btn-success complete-workout-btn"
     ${isCompleted ? 'disabled' : ''}>
       <i class="fas fa-check"></i> Выполнено
     </button>
-    <c:if test="${canEdit}">
-      <div class="d-flex gap-2">
-        <button type="button" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#editWorkoutModal">
-          <i class="fas fa-edit"></i> Редактировать
-        </button>
-        <form action="/workout" method="post" style="display: inline;"
-              onsubmit="return confirm('Вы уверены, что хотите удалить эту тренировку?');">
-          <input type="hidden" name="action" value="delete">
-          <input type="hidden" name="workoutId" value="${workout.id}">
-          <button type="submit" class="btn btn-delete">
-            <i class="fas fa-trash"></i> Удалить
-          </button>
-        </form>
-      </div>
-    </c:if>
   </div>
 
   <div class="exercises-section mt-4">
@@ -176,61 +159,20 @@
 
 </div>
 
-<c:if test="${canEdit}">
-  <div class="modal fade" id="editWorkoutModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content bg-dark text-light">
-        <div class="modal-header">
-          <h5 class="modal-title">Редактировать тренировку</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form action="/workout" method="post">
-          <div class="modal-body">
-            <input type="hidden" name="action" value="update">
-            <input type="hidden" name="workoutId" value="${workout.id}">
-
-            <div class="mb-3">
-              <label for="title" class="form-label">Название</label>
-              <input type="text" class="form-control" id="title" name="title"
-                     value="${workout.title}" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="description" class="form-label">Описание</label>
-              <textarea class="form-control" id="description" name="description"
-                        rows="4" required>${workout.description}</textarea>
-            </div>
-
-            <div class="mb-3">
-              <label for="dayNumber" class="form-label">День</label>
-              <input type="number" class="form-control" id="dayNumber" name="dayNumber"
-                     value="${workout.dayNumber}" required min="1">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button type="submit" class="btn btn-primary">Сохранить</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</c:if>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function markWorkoutAsCompleted(workoutId) {
     console.log('Marking workout as completed, ID:', workoutId);
-    
+
     if (!workoutId) {
       alert('Ошибка: ID тренировки не определен');
       return;
     }
-    
+
     const params = new URLSearchParams();
     params.append('workoutId', workoutId);
     console.log('Params:', params.toString());
-    
+
     fetch('/api/workout/complete', {
       method: 'POST',
       headers: {
@@ -238,23 +180,23 @@
       },
       body: params
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Response:', data);
-      if (data.status === 'success') {
-        const btn = document.querySelector('.complete-workout-btn');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-check"></i> Выполнено';
-        btn.classList.add('btn-secondary');
-        btn.classList.remove('btn-success');
-      } else {
-        alert(data.message || 'Ошибка при отметке тренировки как выполненной');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('Произошла ошибка при отметке тренировки');
-    });
+            .then(response => response.json())
+            .then(data => {
+              console.log('Response:', data);
+              if (data.status === 'success') {
+                const btn = document.querySelector('.complete-workout-btn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-check"></i> Выполнено';
+                btn.classList.add('btn-secondary');
+                btn.classList.remove('btn-success');
+              } else {
+                alert(data.message || 'Ошибка при отметке тренировки как выполненной');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Произошла ошибка при отметке тренировки');
+            });
   }
 </script>
 </body>

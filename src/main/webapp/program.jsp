@@ -306,7 +306,6 @@
             });
         });
 
-        // Валидация дня тренировки
         document.getElementById('dayNumber').addEventListener('input', function(e) {
             const max = parseInt(this.getAttribute('max'));
             const value = parseInt(this.value);
@@ -318,7 +317,6 @@
             }
         });
 
-        // Валидация формы перед отправкой
         document.getElementById('addWorkoutForm').addEventListener('submit', function(e) {
             const dayInput = document.getElementById('dayNumber');
             const max = parseInt(dayInput.getAttribute('max'));

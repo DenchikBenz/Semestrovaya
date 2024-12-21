@@ -1,5 +1,6 @@
 package entity;
 
+
 public class Progress {
     private int id;
     private int userId;

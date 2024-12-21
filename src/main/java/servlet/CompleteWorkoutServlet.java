@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+
 @WebServlet("/api/workout/complete")
 public class CompleteWorkoutServlet extends HttpServlet {
     private final WorkoutProgressDao workoutProgressDao = new WorkoutProgressDao();

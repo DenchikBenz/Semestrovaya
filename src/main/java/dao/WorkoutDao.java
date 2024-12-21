@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class WorkoutDao {
     private static final String INSERT_WORKOUT = "INSERT INTO workouts (program_id, title, description, day_number) VALUES (?, ?, ?, ?)";
     private static final String SELECT_WORKOUT_BY_ID = "SELECT * FROM workouts WHERE id = ?";

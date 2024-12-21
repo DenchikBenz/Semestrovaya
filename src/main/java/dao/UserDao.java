@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 public class UserDao {
     private static final String UPDATE_USER = "UPDATE users SET name = ?, email = ? WHERE id = ?";
     private static final String INSERT_USER = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";

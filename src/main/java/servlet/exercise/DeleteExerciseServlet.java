@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @WebServlet("/api/exercise/delete")
 public class DeleteExerciseServlet extends HttpServlet {
     private final ExerciseService exerciseService = new ExerciseService();

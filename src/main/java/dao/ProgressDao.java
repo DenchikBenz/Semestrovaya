@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class ProgressDao {
     private static final String INSERT_PROGRESS = "INSERT INTO progress (user_id, program_id, day, status) VALUES (?, ?, ?, ?)";
     private static final String SELECT_PROGRESS_BY_USER_AND_PROGRAM = "SELECT * FROM progress WHERE user_id = ? AND program_id = ?";

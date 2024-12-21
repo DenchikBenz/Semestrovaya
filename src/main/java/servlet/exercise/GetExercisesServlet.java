@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @WebServlet("/api/exercise/list")
 public class GetExercisesServlet extends HttpServlet {
     private final ExerciseService exerciseService = new ExerciseService();
